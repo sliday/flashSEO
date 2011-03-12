@@ -30,7 +30,7 @@ $img_prefix='';
 
 //Проверка наличия кофигурационного файла, его загрузка
 if (!@include_once('config.php')){ 
-	exit('Can\'t find file "config.php" <br>Be sure, that you placed it in the same folder with "flashSEO.php"<br>For further information please read "README.txt" ');
+	exit('Can\'t find file "config.php" <br>Be sure, that you placed it in the same folder with "flashSEO.php"<br>For further information please read "README" ');
 }
 
 //генерирование мета тэгов
@@ -55,19 +55,50 @@ if($title!='')$meta_str.="\n<title>$title</title>";
 $content_str='';
 if($title!='')$content_str.="<h1>$title</h1>\n";
 
+
+
+
+
 if($bot||$test_mode){
 	if($text_files!=''){
 		$text_files_arr=explode(',',$text_files);
 		for($i=0;$i<count($text_files_arr);$i++){
-			$file_name=trim($text_files_arr[$i]);
+			$doubledot_pos=strrpos($text_files_arr[$i],":");
+			$file_name='';
+			$xsl_name='';
+			if($doubledot_pos===false)
+				$file_name=trim($text_files_arr[$i]);
+			else{
+				$filenames_arr=explode(':',$text_files_arr[$i]);
+				$file_name=trim($filenames_arr[0]);
+				$xsl_name=trim($filenames_arr[1]);
+			}
 			if($file_name!=''){
-			if(!file_exists($file_name))
-				exit('Can\'t find file "'.$file_name.'" <br>Be sure, that it exists and that you edited your config.php right <br>For further information please read "README.txt" ');
-			if(!$xml = simplexml_load_file($file_name,NULL,LIBXML_NOCDATA|LIBXML_NOBLANKS))
-				exit("simplexml error\nBe sure, that your xml files are written in UTF-8");
-			$str='';
-			parseTillText($xml,$str);
-			$GLOBALS["content_str"].=$str;
+				if($xsl_name!=''){
+					$xml = new DOMDocument;
+					if(!file_exists($file_name))
+						exit('Can\'t find file "'.$file_name.'" <br>Be sure, that it exists and that you edited your config.php right <br>For further information please read "README.txt" ');
+					$xml->load($file_name);
+					$xsl = new DOMDocument;
+					if(!file_exists($xsl_name))
+						exit('Can\'t find file "'.$xsl_name.'" <br>Be sure, that it exists and that you edited your config.php right <br>For further information please read "README.txt" ');
+					$xsl->load($xsl_name);
+					$proc = new XSLTProcessor;
+					$proc->importStyleSheet($xsl); 
+
+					$content_str.=str_replace("&gt;",">",str_replace("&lt;","<",$proc->transformToXML($xml)));
+				}else{
+				$xml = new DOMDocument;
+					if(!file_exists($file_name))
+						exit('Can\'t find file "'.$file_name.'" <br>Be sure, that it exists and that you edited your config.php right <br>For further information please read "README.txt" ');
+					$xml->load($file_name);
+					$xsl = new DOMDocument;		
+					$xsl->loadXML( $default_xls );					
+					$proc = new XSLTProcessor;
+					$proc->importStyleSheet($xsl); 
+
+					$content_str.=str_replace("&gt;",">",str_replace("&lt;","<",$proc->transformToXML($xml)));
+				}
 			}
 		}
 	}
@@ -90,18 +121,11 @@ if($bot||$test_mode){
 	$GLOBALS["content_str"]="\n\n\n<!--!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\nATTENTION\nTEXT AND IMAGES WILL ONLY BE SHOWN FOR SEARCH BOTS\nIF YOU WANT TO SEE IT LIKE A SEARCH BOT, ADD ?testseo TO YOUR URL\nLIKE THIS: http://www.example.com/index.php?testseo\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->\n\n\n";
 }
 
-
-//функция прохождения по дереву
-function parseTillText($xml,&$str){
-	$tmp;
-	foreach($xml->children() as $tmp){
-		if($tmp!=''){
-		$str.= "<h2>".$tmp->getName()."</h2>\n";
-		$str.= ("<p>".$tmp."</p>\n\n");
-		}
-		parseTillText($tmp,$str);
-	}
+function parseXSLT($xml,&$str){
+	
 }
+
+
 
 //функция парсинга файлов с картинками
 function parseImg($xml,&$str){
@@ -128,7 +152,8 @@ $html_head="<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" lang=\"
 if(isset($_GET['getmeta']))
 	exit( $GLOBALS["html_head"].str_replace(">","&gt;<br>",str_replace("<","&lt;",$GLOBALS["meta_str"]))."</html>");
 if(isset($_GET['getcontent']))
-	exit( $GLOBALS["html_head"].$GLOBALS["content_str"]."</html>");
+	exit($GLOBALS["content_str"]);
+	//exit( $GLOBALS["html_head"].str_replace(">","&gt;<br>",str_replace("<","&lt;",$GLOBALS["content_str"]))."</html>");
 
 //вспомогательные функции
 function addMeta($key,$value){

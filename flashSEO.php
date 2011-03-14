@@ -111,7 +111,6 @@ if(isset($_GET['getcontent'])){
 	exit($content_str);
 }
 
-//вспомогательные функции
 function getMeta(){
 	echo $GLOBALS["meta_str"];	
 }

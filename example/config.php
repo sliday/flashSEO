@@ -1,23 +1,26 @@
 ﻿<?php
 if (!defined('CONFIG_LOADED'))
 	define("CONFIG_LOADED", "PLEASE, DO NOT REMOVE THIS LINE.");
+
 //Meta tags
 $copyright='2011 Sliday';
 $language='English';
-$description='flash SEO Test page';
-$keywords='flash, SEO, Sliday';
+$description='Example flashSEO Test page';
+$keywords='flash, SEO, Sliday, flashSEO';
 $author='Dmitry Filimonov';
 
 //Page title. Leave it blank if you define it on the page
 $title='';
 
 //Paths to the text data files. Use comma as a delimeter
-//Append XSL file with a colon 
-$text_files='data.xml:data.xsl';
+$text_files='xml/about.xml:xsl/about.xsl';
 
 //Paths to the image data files. Use comma as a delimeter
-//Append XSL file with a colon 
-$img_files='img.xml';
+
+$img_files='xml/img.xml:xsl/img.xsl';
+
+
+$img_prefix='';
 
 $default_text_xls='<?xml version="1.0" encoding="UTF-8" ?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">

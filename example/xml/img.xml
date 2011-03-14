@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<albums> 
+	<album alb_id="18" alb_parent_id="1" alb_title="Girls" alb_description="Girls description" alb_is_active="1" alb_order="8" alb_thumbnail="thumbs/girls/alinah/alinah_01.jpg" alb_has_children="0"> 
+		<image img_id="318" img_album_id="37" img_title="" img_description="" img_thumbnail="images/index_bg_thumb.jpg" img_src="images/index_bg.jpg" img_order="0" img_additional_Info1="" img_additional_Info2="" img_additional_Info3=""/> 
+		<image img_id="319" img_album_id="37" img_title="" img_description="" img_thumbnail="images/natasha_thumb.jpg" img_src="images/natasha.jpg" img_order="0" img_additional_Info1="" img_additional_Info2="" img_additional_Info3=""/> 
+	</album> 
+	<album alb_id="17" alb_parent_id="1" alb_title="Beefeater" alb_description="Beefeater description" alb_is_active="1" alb_order="9" alb_thumbnail="thumbs/girls/ritakolyanatasha/rkn_01.jpg" alb_has_children="0"> 
+		<image img_id="318" img_album_id="37" img_title="" img_description="" img_thumbnail="images/renata_beefeater_thumb.jpg" img_src="images/renata_beefeater.jpg" img_order="0" img_additional_Info1="" img_additional_Info2="" img_additional_Info3=""/> 
+	</album> 
+</albums>

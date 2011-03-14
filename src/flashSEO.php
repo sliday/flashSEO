@@ -18,22 +18,26 @@ if(isset($_SERVER['HTTP_USER_AGENT'])){
 	$bot = $bot||(false!==strripos ($_SERVER['HTTP_USER_AGENT'],$bot_aliases[$i])); 
 }
 
+//Test mode checking
 if(isset($_GET['getmeta'])||isset($_GET['getcontent'])||isset($_GET['testseo']))$test_mode=true;
 
-$copyright='';
-$language='';
-$description='';
-$keywords='';
-$author='';
-$title='';
-$text_files='';
-$img_files='';
-$img_prefix='';
+
+if(!isset($copyright))$copyright='';
+if(!isset($language))$language='';
+if(!isset($description))$description='';
+if(!isset($keywords))$keywords='';
+if(!isset($author))$author='';
+if(!isset($title))$title='';
+if(!isset($text_files))$text_files='';
+if(!isset($img_files))$img_files='';
+if(!isset($img_prefix))$img_prefix='';
+
 
 //Config loading
-if (!@include_once('config.php')){ 
-	exit('Can\'t find file "config.php" <br>Be sure, that you placed it in the same folder with "flashSEO.php"<br>For further information please read "README" ');
-}
+if (!defined('CONFIG_LOADED'))
+	if (!@include_once('config.php')){ 
+		exit('Can\'t find file "config.php" <br>Be sure, that you placed it in the same folder with "flashSEO.php"<br>For further information please read "README" ');
+	}
 
 //Generating meta-tags
 $meta_str=
@@ -60,6 +64,9 @@ $content_str='';
 
 if(!($bot||$test_mode)){
 	$content_str="\n\n\n<!--!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\nATTENTION\nTEXT AND IMAGES WILL ONLY BE SHOWN FOR SEARCH BOTS\nIF YOU WANT TO SEE IT LIKE A SEARCH BOT, ADD ?testseo TO YOUR URL\nLIKE THIS: http://www.example.com/index.php?testseo\n!!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->\n\n\n";
+}else{
+	parseXML($text_files);
+	parseXML($img_files,1);
 }
 
 //main parsing function
@@ -78,7 +85,6 @@ function parseXML($files_str,$img_flag=0){
 				$xsl_name=trim($filenames_arr[1]);
 			}
 			if($file_name!=''){
-			
 				$xml = new DOMDocument;
 				if(!file_exists($file_name))
 				exit('Can\'t find file "'.$file_name.'" <br>Be sure, that it exists and that you edited your config.php right <br>For further information please read "README" ');
@@ -90,12 +96,12 @@ function parseXML($files_str,$img_flag=0){
 					$xsl->load($xsl_name);
 					$proc = new XSLTProcessor;
 					$proc->importStyleSheet($xsl); 
-					$GLOBALS["content_str"].=str_replace("&gt;",">",str_replace("&lt;","<",$proc->transformToXML($xml)));
+					$GLOBALS["content_str"].=str_replace ( "<?xml version=\"1.0\"?>" , " ",str_replace("&gt;",">",str_replace("&lt;","<",$proc->transformToXML($xml))));
 				}else{
 					$xsl->loadXML($img_flag==1?$GLOBALS['default_img_xls']:$GLOBALS['default_text_xls']);                                        
 					$proc = new XSLTProcessor;
 					$proc->importStyleSheet($xsl); 
-					$GLOBALS["content_str"].=str_replace("&gt;",">",str_replace("&lt;","<",$proc->transformToXML($xml)));
+					$GLOBALS["content_str"].=str_replace ( "<?xml version=\"1.0\"?>" , " ",str_replace("&gt;",">",str_replace("&lt;","<",$proc->transformToXML($xml))));
 				}
 			}
 		}
@@ -106,8 +112,6 @@ if(isset($_GET['getmeta'])){
 	exit($meta_str);
 }
 if(isset($_GET['getcontent'])){
-	parseXML($text_files);
-	parseXML($img_files,1);
 	exit($content_str);
 }
 

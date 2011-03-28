@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 if (!defined('CONFIG_LOADED'))
 	define("CONFIG_LOADED", "PLEASE, DO NOT REMOVE THIS LINE.");
 

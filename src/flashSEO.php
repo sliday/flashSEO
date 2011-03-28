@@ -1,4 +1,4 @@
-﻿<?php 
+<?php 
 /*-----------------------------
 SEO for flash - © Sliday 2011
 Read README file for help

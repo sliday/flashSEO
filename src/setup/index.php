@@ -32,15 +32,44 @@
 			img {
 				border:0;
 			}
+			
+			.meta-table{
+				padding:-10px;
+				background-color:#f7fbff;
+				border:2px solid #c2dcf5;
+			}
+		
+			
+			.meta{
+				padding:10px;
+				//margin-left:8px;
+				margin-bottom:8px;
+				
+				border-top:1px solid #c2dcf5;
+			}
+			.meta-red{
+				padding:10px;
+				margin-bottom:8px;
+				//background-color:#ffdbdb;
+				border-top:1px solid #c2dcf5;
+			}
+			.meta-borderless{
+				padding:10px;
+				margin-bottom:8px;			
+			}
+			
+			
 			.settings {
-				width:400px;
+			
+				width:99%;
+				
 			}
 			.links {
 				width:100%;
 				//position:absolute;
 				//bottom:20px;
 				padding-top:20px;
-				//border-top:1px solid #cccccc;
+				//border-top:1px solid #cfcfcf;
 				
 				padding-left:8px;
 				//margin-top:30px;
@@ -50,7 +79,7 @@
 				margin-left:-4px;
 			}
 			.meta_title{
-				padding-top:4px;
+				//padding-top:4px;
 				margin-bottom:-4px;
 				
 			}
@@ -66,8 +95,8 @@
 		</style>
 	</head> 
 	<body> 
-		<table style="padding-bottom:20px;">
-			<tr><td style="vertical-align:top;">
+		<table style="padding-bottom:20px;width:100%;">
+			<tr><td style="vertical-align:top;width:200px">
 					<div class="left_panel">
 						<a href="index.php" ><img src="flashSEO_logo.png" width="200px" height="51px" ></a>
 						<div style="text-align:right;margin-right:10px;margin-top:-10px;margin-bottom:-8px"><i>by Sliday</i></div><!--margin-bottom:-29px-->
@@ -77,31 +106,36 @@
 					</div>
 			</td>
 			
-			<td style="display: block;margin-top:-2px;margin-bottom:-2px;padding-bottom:30px;padding-left:15px;padding-top:2px;border-left:1px solid #cccccc">
+			<td style="min-width:400px;width:75%;display: block;margin-top:-2px;margin-bottom:-2px;padding-bottom:30px;padding-left:15px;padding-top:2px;border-left:1px solid #cccccc">
 			<div >
-					<h1>Basic settings</h1>
+					<h1>Meta-information</h1>
 					
 					<div style="padding-left:20px;">
-								<div style="width:400px;text-align:center;">
-								<h2>Meta-information</h2>
+								<div style="width:100%;text-align:left;padding-bottom:20px;">
+								<h2></h2>
 								</div>
+								<table width="100%" class="meta-table" cellspacing="0">
 							<?php
 								$titles=array("Title","Copyright","Language","Description","Keywords","Author");
 								$descriptions=array("The title of your page. Leave it blank if you already defined it on the page.","A copyright statement.","The main language of your site.","A short description of the page.","Words that identify what the page is about","The author's name and possibly email address.");
 								$values=array(&$title,&$copyright,&$language,&$description,&$keywords,&$author);
 								for($i=0;$i<count($titles);$i++){
-								$r='';
-								if($i%2==1){
-									$r="style='background-color:#ffcccc;'";
-								}else{
-									$r="style='background-color:#ccffcc;'";
+								if($i==0)echo "<tr><td class='meta-borderless'>";
+								else echo "<tr><td class='meta'>";
+								echo "<div ><div class='meta_title'>".$titles[$i]."</div><div class='meta_description'>".$descriptions[$i]."</div>";
+								echo "<input class='settings' type='text' value='".$values[$i]."'/></div>";
+								echo "</tr></td>";
 								}
-								$r='';
-								echo "<div class='meta_title'>".$titles[$i]."</div><div class='meta_description'>".$descriptions[$i]."</div>";
-								echo "<input class='settings' type='text' value='".$values[$i]."'/>";
-								}
+								
 							?>
+							<tr><td class='meta-red'>
+							<div class='save_settings'>
+								<input value="Download config file" type="submit"  />
+								<input value="Save settings" type="submit"  />
+							</td></tr>
+							</table>
 							
+							</div>
 						
 						
 						

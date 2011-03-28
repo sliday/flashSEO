@@ -10,8 +10,7 @@
 				margin:0;
 			}
 			h1,h2{
-			//font-family:Georgia, "Times New Roman", Times, serif;
-			font-weight:normal;
+				font-weight:normal;
 			}
 			.left_panel a{
 		
@@ -108,11 +107,7 @@
 								</center>
 							</div>
 						
-					</div>
-					
-				
-			
-			
+					</div>		
 			</div>
 			</td>
 			</tr>		
